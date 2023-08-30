@@ -3,75 +3,57 @@ class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            nom: "Ln",
-            textarea: "",
-            select: "demo3",
-            selectMulti: ["demo4", "demo6"],
-            checked: true
+            nom: "",
+            prenom: "",
+            newsletter: false
         }
         this.handleChange = this.handleChange.bind(this)
-        this.handleChangeMulti = this.handleChangeMulti.bind(this)
-        this.handleChangeCheck = this.handleChangeCheck.bind(this)
     }
 
     handleChange(e) {
+        //on ne mute que la clé qui correspond au nom du champ
+        const name = e.target.name
+        //on fait une manip spéciale pour la checkbox
+        const type = e.target.type
+        const value = type === 'checkbox' ? e.target.checked : e.target.value     
         this.setState({
-            nom: e.target.value
+            [name]: value
         })
     }
 
-    handleChangeMulti(e) {
-        this.setState({
-            selectMulti: Array.from(e.target.selectedOptions)
-            .map(o => o.value)
-        })
-    }
-
-    handleChangeCheck(e) {
-        this.setState({
-            checked: e.target.checked
-        })
-    }
     render() {
         return <div>
-            <label htmlFor="nom">Mon nom</label>
-            {this.state.nom}
-            <input 
-                type="text" 
-                id="nom" 
-                name="nom" 
-                value={this.state.nom} 
-                onChange={this.handleChange} 
-            />
-            <textarea
-                id="textarea" 
-                name="textaera" 
-                value={this.state.textarea} 
-                onChange={this.handleChange}
-            ></textarea>
-            <select 
-                value={this.state.select} 
-                onChange={this.handleChange}
-            >
-                <option value="demo1">Démo 1</option>
-                <option value="demo2">Démo 2</option>
-                <option value="demo3">Démo 3</option>
-            </select>
-            {JSON.stringify(this.state.selectMulti)}
-            <select 
-                value={this.state.selectMulti} 
-                onChange={this.handleChangeMulti} 
-                multiple
-            >
-                <option value="demo4">Démo 4</option>
-                <option value="demo5">Démo 5</option>
-                <option value="demo6">Démo 6</option>
-            </select>
-            <input 
-                type="checkbox" 
-                checked={this.state.checked} 
-                onChange={this.handleChangeCheck}
-            />
+            <div>
+                <label htmlFor="nom">Nom</label>
+                <input 
+                    type="text"
+                    value={this.state.nom}
+                    onChange={this.handleChange}
+                    id="nom"
+                    name="nom"
+                />
+            </div>
+            <div>
+                <label htmlFor="prenom">Prenom</label>
+                <input 
+                    type="text"
+                    value={this.state.prenom}
+                    onChange={this.handleChange}
+                    id="prenom"
+                    name="prenom"
+                />
+            </div>
+            <div>
+                <label htmlFor="newsletter">Inscription à la newsletter</label>
+                <input 
+                    type="checkbox"
+                    checked={this.state.newsletter}
+                    onChange={this.handleChange}
+                    id="newsletter"
+                    name="newsletter"
+                />
+            </div>
+            {JSON.stringify(this.state)}
         </div>
     }
 }
