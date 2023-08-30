@@ -35,7 +35,7 @@ class Clock extends React.Component {
 
 // vie du composant
     componentDidMount() {
-        //contexte de this est perdu quand j'appelle la fonction tick donc je dois rajouter (this)
+        //contexte de this est perdu quand j'appelle la fonction tick donc je dois rajouter .bind(this)
         this.timer = window.setInterval(this.tick.bind(this), 1000)
     }
 
@@ -60,11 +60,37 @@ class Clock extends React.Component {
     }
 }
 
+class Incrementer extends React.Component {
+    constructor (props) {
+        super(props)
+        this.state = {n: props.start}
+        this.timer = null
+    }
+    componentDidMount() {
+        this.counter = window.setInterval(this.increment.bind(this), 1000)
+    }
+
+    componentwillUnmount() {
+        window.clearInterval(this.timer)
+    }
+
+    increment() {
+        this.setState({n: this.state.n +1})
+    }
+    render() {
+        
+        return <div>
+            Le compteur est à {this.state.n}
+        </div>
+        
+    }
+}
 function Home () {
     return <div>
         <Welcome name="Ln" />
         <Welcome name="Gérard" />
         <Clock/>
+        <Incrementer start={10}/>
     </div>
 }
 
