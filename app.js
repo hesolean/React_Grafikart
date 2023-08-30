@@ -63,15 +63,15 @@ class Clock extends React.Component {
 class Incrementer extends React.Component {
     constructor (props) {
         super(props)
-        this.state = {n: props.start}
-        this.timer = null
+        this.state = {n: props.start, timer: null}
     }
     componentDidMount() {
-        this.counter = window.setInterval(this.increment.bind(this), 1000)
+        this.play()
     }
 
     componentwillUnmount() {
-        window.clearInterval(this.timer)
+        // il ne faut pas utiliser un setState sinon disfonctionnement interne à React
+        window.clearInterval(this.state.timer)
     }
 
     increment() {
@@ -79,12 +79,60 @@ class Incrementer extends React.Component {
         // une fonction qui va exécuter l'action. Version plus stable pour React
         this.setState((state, props) => ({n: state.n + props.step}))
     }
+
+    /**
+     * arrêter le compteur de temps
+     */
+    pause() {
+        window.clearInterval(this.state.timer)
+        this.setState({
+            timer: null
+        })
+    }
+
+    /**
+     * relance le compteur de temps
+     */
+    play() {
+        // on nettoie le timer à chaque fois pour que le timer redémarre correctement
+        // même si on appuie plusieurs fois sur Lancer
+        window.clearInterval(this.state.timer)
+
+        this.setState({
+            timer: window.setInterval(this.increment.bind(this), 1000)
+        })
+    }
+
+    /**
+     * 
+     * @returns la fonction à utiliser en fonction de l'état de this.state.timer
+     */
+    toggle() {
+        return this.state.timer ? this.pause() : this.play()
+    }
+
+    /**
+     * 
+     * @returns le nom du bouton en fonction de l'état de this.state.timer
+     */
+    label() {
+        return this.state.timer ? 'Pause' : 'Lancer'
+    }
+
+    zero() {
+        this.pause()
+        this.setState((state, props) => ({n: props.start}))
+        this.play()
+    }
+
     render() {
-        
         return <div>
             Le compteur est à {this.state.n}
+            <button onClick={this.toggle.bind(this)}>
+                {this.label()}
+            </button>
+            <button onClick={this.zero.bind(this)}>Réinitialiser</button>
         </div>
-        
     }
 }
 
@@ -100,7 +148,8 @@ class ManualIncrementer extends React.Component {
         super(props)
         this.state = {n: 0}
     }
-    increment() {
+    increment(e) {
+        e.preventDefault()
         this.setState((state, props) => ({n: state.n +1}))
     }
     render() {
