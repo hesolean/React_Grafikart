@@ -75,7 +75,7 @@ class Incrementer extends React.Component {
     }
 
     increment() {
-        // dans le cas où plusieur setStates sont utilisés, il faut passer en paramètre de setState
+        // dans le cas où plusieurs setStates sont utilisés, il faut passer en paramètre de setState
         // une fonction qui va exécuter l'action. Version plus stable pour React
         this.setState((state, props) => ({n: state.n + props.step}))
     }
@@ -94,6 +94,25 @@ Incrementer.defaultProps = {
     step: 1
 }
 
+
+class ManualIncrementer extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {n: 0}
+    }
+    increment() {
+        this.setState((state, props) => ({n: state.n +1}))
+    }
+    render() {
+        return <div>
+                    Valeur : {this.state.n}
+                    <button onClick={this.increment.bind(this)}>
+                        Incrémenter
+                    </button>
+                </div>
+    }
+}
+
 function Home () {
     return <div>
         <Welcome name="Ln" />
@@ -101,7 +120,7 @@ function Home () {
         <Clock/>
         <Incrementer start={10}/>
         <Incrementer start={150} step={10}/>
-
+        <ManualIncrementer/>
     </div>
 }
 
