@@ -43,13 +43,33 @@ function numberFormat(n) {
 }
 
 function render() {
-    const title = <h1 id={"title" + n} className="title">
+    const items = [
+        'bouger',
+        'changer',
+        'aboyer',
+        'ricanner'
+    ];
+    // pour afficher toutes les tâches, au lieu de faire une boucle for,
+    // on crée une variable qui map sur la liste
+    const lis = items.map(item => <li>{item}</li>);
+    // on peut intégrer la ligne précédente directelent dans l'interpolation
+    //mais cela complique la lecture du code
+
+    // quand on veut créer plusieurs éléments dans la même constante,
+    // il faut que les éléments soient imbriqués dans une div
+    // sinon il faut utiliser fragment ou vide, tout dépend de la version de babel
+    const title = <React.Fragment>
+        <h1 id={"title" + n} className="title">
         {/* id va changer à chaque nouvelle valeur de n */}
         Bonjour tout le monde <span>{n % 2 ? numberFormat(n) : null}</span>
         {/* si on met le span à la ligne, il ne prend pas en compte des espaces */}
         <br></br>
-        <span>{['texte1 ', 'texte2']}</span></h1>;
-        // on peut mettre plusieurs valeurs mais sous forme de tableau
+        <span>{['texte1 ', 'texte2']}</span>
+        </h1>
+        <ul>
+            {lis}
+        </ul>
+        </React.Fragment>;
     ReactDOM.render(title, document.querySelector('#app'));
 };
 
