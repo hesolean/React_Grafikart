@@ -1,3 +1,12 @@
+class Field extends React.Component {
+    render() {
+        const {name, value, onChange} = this.props
+        return <div className="form-group">
+            <label htmlFor={name}>Le libellé</label>
+            <input type="text" value={value} onChange={onChange} id={name} name={name} className="form-control" /> 
+        </div>
+    }
+}
 class Home extends React.Component {
 
     constructor(props) {
@@ -5,7 +14,8 @@ class Home extends React.Component {
         this.state = {
             nom: "",
             prenom: "",
-            newsletter: false
+            newsletter: false,
+            noncontrole: ""
         }
         this.handleChange = this.handleChange.bind(this)
     }
@@ -23,7 +33,8 @@ class Home extends React.Component {
 
     render() {
         return <div>
-            <div>
+            <Field name="nom" value={this.state.nom} onChange={this.handleChange} />
+            {/* <div>
                 <label htmlFor="nom">Nom</label>
                 <input 
                     type="text"
@@ -52,8 +63,20 @@ class Home extends React.Component {
                     id="newsletter"
                     name="newsletter"
                 />
+            </div>*/}
+            {/* cas d'un champ non controlé, plus performant car c'est la DOM qui le controle*/}
+            {/*<div>
+                <label htmlFor="noncontrole">Champ non contrôlé vide et prérempli</label>
+                <input 
+                    type="text"
+                    value={undefined}
+                />
+                <input 
+                    type="text"
+                    defaultValue="prérempli"
+                />
             </div>
-            {JSON.stringify(this.state)}
+            {JSON.stringify(this.state)} */}
         </div>
     }
 }
