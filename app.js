@@ -75,7 +75,9 @@ class Incrementer extends React.Component {
     }
 
     increment() {
-        this.setState({n: this.state.n +1})
+        // dans le cas où plusieur setStates sont utilisés, il faut passer en paramètre de setState
+        // une fonction qui va exécuter l'action. Version plus stable pour React
+        this.setState((state, props) => ({n: state.n + props.step}))
     }
     render() {
         
@@ -85,12 +87,21 @@ class Incrementer extends React.Component {
         
     }
 }
+
+// met des valeurs par défaut si non renseignés
+Incrementer.defaultProps = {
+    start: 0,
+    step: 1
+}
+
 function Home () {
     return <div>
         <Welcome name="Ln" />
         <Welcome name="Gérard" />
         <Clock/>
         <Incrementer start={10}/>
+        <Incrementer start={150} step={10}/>
+
     </div>
 }
 
