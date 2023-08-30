@@ -1,12 +1,17 @@
-class Field extends React.Component {
-    render() {
-        const {name, value, onChange} = this.props
-        return <div className="form-group">
-            <label htmlFor={name}>Le libellé</label>
-            <input type="text" value={value} onChange={onChange} id={name} name={name} className="form-control" /> 
-        </div>
-    }
+function Field ({name, value, onChange, children}) {
+    return <div className="form-group">
+        <label htmlFor={name}>{children}</label>
+        <input type="text" value={value} onChange={onChange} id={name} name={name} className="form-control" /> 
+    </div>
 }
+
+function Checkbox ({name, checked, onChange, children}) {
+    return <div className="form-check">
+        <input type="checkbox" checked={checked} onChange={onChange} id={name} name={name} className="form-check-input" />
+        <label htmlFor={name} class="form-check-label">{children}</label>
+    </div>
+}
+
 class Home extends React.Component {
 
     constructor(props) {
@@ -32,9 +37,31 @@ class Home extends React.Component {
     }
 
     render() {
-        return <div>
-            <Field name="nom" value={this.state.nom} onChange={this.handleChange} />
-            {/* <div>
+        return <div className="container">
+            {/* version Bootstrap */}
+            <Field 
+                name="nom" 
+                value={this.state.nom} 
+                onChange={this.handleChange}
+            >
+                Nom
+            </Field>
+            <Field 
+                name="prenom" 
+                value={this.state.prenom} 
+                onChange={this.handleChange}
+            >
+                Prénom
+            </Field>
+            <Checkbox
+                name="newsletter"
+                checked={this.state.newsletter}
+                onChange={this.handleChange}
+            >
+                Inscription à la newsletter
+            </Checkbox>
+            {/* version normale
+            <div>
                 <label htmlFor="nom">Nom</label>
                 <input 
                     type="text"
@@ -75,8 +102,8 @@ class Home extends React.Component {
                     type="text"
                     defaultValue="prérempli"
                 />
-            </div>
-            {JSON.stringify(this.state)} */}
+            </div> */}
+            {JSON.stringify(this.state)}
         </div>
     }
 }
