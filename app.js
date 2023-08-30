@@ -8,7 +8,7 @@ function Field ({name, value, onChange, children}) {
 function Checkbox ({name, checked, onChange, children}) {
     return <div className="form-check">
         <input type="checkbox" checked={checked} onChange={onChange} id={name} name={name} className="form-check-input" />
-        <label htmlFor={name} class="form-check-label">{children}</label>
+        <label htmlFor={name} className="form-check-label">{children}</label>
     </div>
 }
 
@@ -19,10 +19,10 @@ class Home extends React.Component {
         this.state = {
             nom: "",
             prenom: "",
-            newsletter: false,
-            noncontrole: ""
+            newsletter: false
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     handleChange(e) {
@@ -36,8 +36,18 @@ class Home extends React.Component {
         })
     }
 
+    handleSubmit(e) {
+        e.preventDefault()
+        const data = JSON.stringify(this.state)
+        this.setState({
+            nom: "",
+            prenom: "",
+            newsletter: false
+        })
+    }
+
     render() {
-        return <div className="container">
+        return <form className="container" onSubmit={this.handleSubmit}>
             {/* version Bootstrap */}
             <Field 
                 name="nom" 
@@ -60,6 +70,9 @@ class Home extends React.Component {
             >
                 Inscription à la newsletter
             </Checkbox>
+            <div className="form-group">
+                <button className="btn btn-primary">Envoyer</button>
+            </div>
             {/* version normale
             <div>
                 <label htmlFor="nom">Nom</label>
@@ -104,7 +117,7 @@ class Home extends React.Component {
                 />
             </div> */}
             {JSON.stringify(this.state)}
-        </div>
+        </form>
     }
 }
 
